@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Game Predictions</title>
+</head>
+<body>
+    <h1>Submit Your Predictions</h1>
+    <form id="dataForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <h2>Choose the Winner for Each Game:</h2>
+        <label for="game1">Game 1:</label>
+        <select id="game1" name="game1" required>
+            <option value="Team A">Team A</option>
+            <option value="Team B">Team B</option>
+        </select>
+        <br>
+        <label for="game2">Game 2:</label>
+        <select id="game2" name="game2" required>
+            <option value="Team C">Team C</option>
+            <option value="Team D">Team D</option>
+        </select>
+        <br>
+        <label for="game3">Game 3:</label>
+        <select id="game3" name="game3" required>
+            <option value="Team E">Team E</option>
+            <option value="Team F">Team F</option>
+        </select>
+        <br>
+        <label for="game4">Game 4:</label>
+        <select id="game4" name="game4" required>
+            <option value="Team G">Team G</option>
+            <option value="Team H">Team H</option>
+        </select>
+        <br>
+        <label for="game5">Game 5:</label>
+        <select id="game5" name="game5" required>
+            <option value="Team I">Team I</option>
+            <option value="Team J">Team J</option>
+        </select>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Submitted Predictions</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Game 1</th>
+                <th>Game 2</th>
+                <th>Game 3</th>
+                <th>Game 4</th>
+                <th>Game 5</th>
+            </tr>
+        </thead>
+        <tbody id="dataTable">
+            <!-- Data will be populated here -->
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            fetch('/submit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const dataTable = document.getElementById('dataTable');
+                dataTable.innerHTML = '';
+                data.data.forEach(entry => {
+                    const row = document.createElement('tr');
+                    Object.values(entry).forEach(value => {
+                        const cell = document.createElement('td');
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+                    dataTable.appendChild(row);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
